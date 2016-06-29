@@ -1104,23 +1104,29 @@ var _post = require("./post");
 
 var _post2 = _interopRequireDefault(_post);
 
+var _user = require("./user");
+
+var _user2 = _interopRequireDefault(_user);
+
 var _ui = require("./ui");
 
 var _ui2 = _interopRequireDefault(_ui);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Punto de entrada de la aplicacion
- */
-
 _post2.default.findAll().then(_ui2.default.renderPosts).catch(function (error) {
+	console.log(error);
+}); /**
+     * Punto de entrada de la aplicacion
+     */
+
+_user2.default.findRecent().then(_ui2.default.renderUsers).catch(function (error) {
 	console.log(error);
 });
 
 console.log('end');
 
-},{"./post":3,"./ui":4}],3:[function(require,module,exports){
+},{"./post":3,"./ui":4,"./user":5}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1181,10 +1187,29 @@ var ui = {
 
 		var target = document.querySelector(".container");
 		target.innerHTML = elements.join("");
+	},
+	renderUsers: function renderUsers(users) {
+		var elements = users.map(function (user) {
+			var name = user.name;
+			var avatar = user.avatar;
+
+			return userTemplate(name, avatar);
+		});
+
+		var target = document.querySelector(".sidebar-content");
+		target.innerHTML = elements.join("");
 	}
 }; /**
     * modulo para renderizar los posts
     */
+
+function userTemplate(name, avatar) {
+	var safeName = _xssFilters2.default.inHTMLData(name);
+	var safeAvatar = _xssFilters2.default.inHTMLData(avatar);
+
+	var template = "\n\t\t<div class=\"active-avatar\">\n\t    \t<img width=\"54\" src=\"assets/images/" + safeAvatar + "\">\n\t    \t<h5 class=\"post-author\">" + safeName + "</h5>\n\t    </div>";
+	return template;
+}
 
 function articleTemplate(title, lastReply) {
 	var safeTitle = _xssFilters2.default.inHTMLData(title);
@@ -1197,4 +1222,40 @@ function articleTemplate(title, lastReply) {
 
 exports.default = ui;
 
-},{"xss-filters":1}]},{},[2]);
+},{"xss-filters":1}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+/**
+ * modulo para obtener los usuarios
+ */
+
+var User = {
+	findRecent: function findRecent() {
+		return new Promise(function (resolve, reject) {
+			// la uri dada por json-server, de npm instalacion global
+			var uri = "http://localhost:3000/activeUsers";
+			var request = new XMLHttpRequest();
+
+			request.open("GET", uri, true);
+
+			request.onload = function () {
+				if (request.status >= 200 && request.status < 400) {
+					resolve(JSON.parse(request.response));
+				}
+			};
+
+			request.onerror = function () {
+				reject(new Error("Something wrong with API"));
+			};
+
+			request.send();
+		});
+	}
+};
+
+exports.default = User;
+
+},{}]},{},[2]);
