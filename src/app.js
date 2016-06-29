@@ -1,32 +1,9 @@
-let Post = {
-	findAll(){
-		return new Promise( (resolve,reject) => {
-			// la uri dada por json-server, de npm instalacion global
-			let uri = "http://localhost:3000/posts";
-			let request = new XMLHttpRequest();
+/**
+ * Punto de entrada de la aplicacion
+ */
 
-			request.open("GET", uri, true);
-
-			request.onload = () => {
-				if(request.status >= 200 && request.status < 400){
-					resolve( JSON.parse(request.response) );
-				}
-			};
-
-			request.onerror = () => {
-				reject( new Error("Something wrong with API") );
-			};
-
-			request.send();
-		});
-	}
-};
-
-let ui = {
-	renderPosts(posts){
-		console.log( posts );
-	}
-};
+import Post from "./post";
+import ui from "./ui";
 
 Post.findAll()
 	.then(ui.renderPosts)
