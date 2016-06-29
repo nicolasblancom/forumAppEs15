@@ -69,9 +69,24 @@ Object.defineProperty(exports, "__esModule", {
 
 var ui = {
 	renderPosts: function renderPosts(posts) {
-		console.log(posts);
+		var elements = posts.map(function (post) {
+			var title = post.title;
+			var lastReply = post.lastReply;
+
+
+			return articleTemplate(title, lastReply);
+		});
+
+		var target = document.querySelector(".container");
+		target.innerHTML = elements.join("");
 	}
 };
+
+function articleTemplate(title, lastReply) {
+	var template = "\n\t\t<article class='post'>\n\t\t\t<h2 class='post-title'>\n\t\t\t\t" + title + "\n\t\t\t</h2>\n\t\t\t<p class='post-meta'>\n\t\t\t\t" + lastReply + "\n\t\t\t</p>\n\t\t</article>";
+
+	return template;
+}
 
 exports.default = ui;
 
