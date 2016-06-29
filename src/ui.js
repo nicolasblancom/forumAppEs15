@@ -2,6 +2,8 @@
  * modulo para renderizar los posts
  */
 
+import xss from "xss-filters";
+
 let ui = {
 	renderPosts(posts){
 		let elements = posts.map( (post) => {
@@ -16,13 +18,16 @@ let ui = {
 };
 
 function articleTemplate(title, lastReply){
+	var safeTitle = xss.inHTMLData(title);
+	var safeLastReply = xss.inHTMLData(lastReply);
+
 	let template = `
 		<article class='post'>
 			<h2 class='post-title'>
-				${title}
+				${safeTitle}
 			</h2>
 			<p class='post-meta'>
-				${lastReply}
+				${safeLastReply}
 			</p>
 		</article>`;
 
