@@ -1100,6 +1100,42 @@ exports.uriFragmentInHTMLComment = exports.uriComponentInHTMLComment;
 },{}],2:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+/**
+ * modulo para tratar consultas de datos, sera la api de la aplicacion
+ */
+
+var API = {
+	fetch: function fetch(path) {
+		return new Promise(function (resolve, reject) {
+			// la uri dada por json-server, de npm instalacion global
+			var uri = "http://localhost:3000/" + path;
+			var request = new XMLHttpRequest();
+
+			request.open("GET", uri, true);
+
+			request.onload = function () {
+				if (request.status >= 200 && request.status < 400) {
+					resolve(JSON.parse(request.response));
+				}
+			};
+
+			request.onerror = function () {
+				reject(new Error("Something wrong with API"));
+			};
+
+			request.send();
+		});
+	}
+};
+
+exports.default = API;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+
 var _post = require("./post");
 
 var _post2 = _interopRequireDefault(_post);
@@ -1126,43 +1162,30 @@ _user2.default.findRecent().then(_ui2.default.renderUsers).catch(function (error
 
 console.log('end');
 
-},{"./post":3,"./ui":4,"./user":5}],3:[function(require,module,exports){
+},{"./post":4,"./ui":5,"./user":6}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-/**
- * modulo para obtener los posts y gestionarlos
- */
+
+var _api = require("./api");
+
+var _api2 = _interopRequireDefault(_api);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Post = {
 	findAll: function findAll() {
-		return new Promise(function (resolve, reject) {
-			// la uri dada por json-server, de npm instalacion global
-			var uri = "http://localhost:3000/posts";
-			var request = new XMLHttpRequest();
-
-			request.open("GET", uri, true);
-
-			request.onload = function () {
-				if (request.status >= 200 && request.status < 400) {
-					resolve(JSON.parse(request.response));
-				}
-			};
-
-			request.onerror = function () {
-				reject(new Error("Something wrong with API"));
-			};
-
-			request.send();
-		});
+		return _api2.default.fetch("posts");
 	}
-};
+}; /**
+    * modulo para obtener los posts y gestionarlos
+    */
 
 exports.default = Post;
 
-},{}],4:[function(require,module,exports){
+},{"./api":2}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1222,40 +1245,27 @@ function articleTemplate(title, lastReply) {
 
 exports.default = ui;
 
-},{"xss-filters":1}],5:[function(require,module,exports){
+},{"xss-filters":1}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-/**
- * modulo para obtener los usuarios
- */
+
+var _api = require("./api");
+
+var _api2 = _interopRequireDefault(_api);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var User = {
 	findRecent: function findRecent() {
-		return new Promise(function (resolve, reject) {
-			// la uri dada por json-server, de npm instalacion global
-			var uri = "http://localhost:3000/activeUsers";
-			var request = new XMLHttpRequest();
-
-			request.open("GET", uri, true);
-
-			request.onload = function () {
-				if (request.status >= 200 && request.status < 400) {
-					resolve(JSON.parse(request.response));
-				}
-			};
-
-			request.onerror = function () {
-				reject(new Error("Something wrong with API"));
-			};
-
-			request.send();
-		});
+		return _api2.default.fetch("activeUsers");
 	}
-};
+}; /**
+    * modulo para obtener los usuarios
+    */
 
 exports.default = User;
 
-},{}]},{},[2]);
+},{"./api":2}]},{},[3]);
