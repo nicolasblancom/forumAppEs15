@@ -2,11 +2,13 @@
  * modulo para tratar consultas de datos, sera la api de la aplicacion
  */
 
+import { BASE_URI } from "./constants";
+
 let API = {
 	fetch(path){
 		return new Promise( (resolve,reject) => {
 			// la uri dada por json-server, de npm instalacion global
-			let uri = `http://localhost:3000/${path}`;
+			let uri = `${BASE_URI}/${path}`;
 			let request = new XMLHttpRequest();
 
 			request.open("GET", uri, true);
