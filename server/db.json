@@ -2,31 +2,31 @@
   "posts": [
     {
       "id": 1,
-      "title": "In hybrid moments, give me a moment",
-      "lastReply": "1997-07-15"
+      "title": "My first post!",
+      "lastReply": "206-05-15"
     },
     {
       "id": 2,
-      "title": "Sound system gonna bring me back up",
-      "lastReply": "1991-07-01"
+      "title": "Another test post here...",
+      "lastReply": "2016-06-01"
     },
     {
       "id": 3,
-      "title": "When I'm out walkin', I strut my stuff",
-      "lastReply": "1983-04-19"
+      "title": "This is the last one, I promise",
+      "lastReply": "2016-07-02"
     }
   ],
   "activeUsers": [
     {
-      "name": "Sam",
+      "name": "Nick",
       "avatar": "avatar.jpg"
     },
     {
-      "name": "Tyler",
+      "name": "M. Jackson",
       "avatar": "avatar.jpg"
     },
     {
-      "name": "Brook",
+      "name": "F. Mercury",
       "avatar": "avatar.jpg"
     }
   ]
